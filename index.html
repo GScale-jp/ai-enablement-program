@@ -12,13 +12,20 @@
   <style>
     :root {
       --primary: #1A365D;
+      --primary-light: #2D4A7A;
       --accent: #0D9488;
       --accent-light: #14B8A6;
+      --accent-glow: rgba(13,148,136,0.15);
       --bg: #F7FAFC;
       --bg-white: #FFFFFF;
       --text: #1A202C;
       --text-light: #4A5568;
+      --text-muted: #718096;
       --border: #E2E8F0;
+      --red-soft: #FED7D7;
+      --red-text: #C53030;
+      --green-soft: #C6F6D5;
+      --green-text: #276749;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -26,164 +33,200 @@
       color: var(--text);
       background: var(--bg);
       line-height: 1.8;
+      overflow-x: hidden;
     }
     .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 
     /* Navigation */
-    nav {
-      background: var(--primary);
-      padding: 16px 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+    nav { background: var(--primary); padding: 16px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
     nav .container { display: flex; justify-content: space-between; align-items: center; }
-    nav .logo { color: #fff; font-size: 20px; font-weight: 700; text-decoration: none; }
+    nav .logo { color: #fff; font-size: 20px; font-weight: 700; text-decoration: none; letter-spacing: 1px; }
     nav .nav-links { display: flex; gap: 24px; list-style: none; }
-    nav .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; }
+    nav .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; transition: color 0.2s; }
     nav .nav-links a:hover { color: #fff; }
 
-    /* Hero */
+    /* ===== HERO ===== */
     #hero {
-      background: linear-gradient(135deg, var(--primary) 0%, #2D4A7A 100%);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, #1E3A5F 100%);
       color: #fff;
-      padding: 100px 0 80px;
-      text-align: center;
+      padding: 80px 0 60px;
+      position: relative;
+      overflow: hidden;
     }
-    #hero h1 { font-size: 40px; line-height: 1.4; margin-bottom: 20px; font-weight: 800; }
-    #hero .subtitle { font-size: 18px; color: rgba(255,255,255,0.85); margin-bottom: 40px; max-width: 640px; margin-left: auto; margin-right: auto; }
-    .btn {
-      display: inline-block;
-      padding: 16px 40px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 16px;
-      transition: transform 0.2s, box-shadow 0.2s;
+    #hero::before {
+      content: '';
+      position: absolute; top: -50%; right: -20%; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(13,148,136,0.2) 0%, transparent 70%);
+      border-radius: 50%;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    #hero::after {
+      content: '';
+      position: absolute; bottom: -30%; left: -10%; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(13,148,136,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; position: relative; z-index: 1; }
+    .hero-text h1 { font-size: 38px; line-height: 1.4; margin-bottom: 20px; font-weight: 800; }
+    .hero-text .subtitle { font-size: 16px; color: rgba(255,255,255,0.85); margin-bottom: 32px; line-height: 1.9; }
+    .hero-text .hero-badges { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .hero-badge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; font-size: 13px; color: rgba(255,255,255,0.9); }
+    .hero-visual { display: flex; justify-content: center; align-items: center; }
+    .btn { display: inline-block; padding: 16px 36px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 16px; transition: transform 0.2s, box-shadow 0.2s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
     .btn-accent { background: var(--accent); color: #fff; }
-    .btn-outline { border: 2px solid #fff; color: #fff; background: transparent; margin-left: 12px; }
+    .btn-outline { border: 2px solid rgba(255,255,255,0.5); color: #fff; background: transparent; margin-left: 12px; }
+    .btn-outline:hover { border-color: #fff; }
+    .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
 
     /* Section common */
     section { padding: 80px 0; }
-    section h2 { font-size: 32px; text-align: center; margin-bottom: 16px; color: var(--primary); }
+    section h2 { font-size: 32px; text-align: center; margin-bottom: 16px; color: var(--primary); font-weight: 800; }
     .section-lead { text-align: center; color: var(--text-light); margin-bottom: 48px; max-width: 640px; margin-left: auto; margin-right: auto; }
 
-    /* Problem */
+    /* ===== NUMBERS (数値インパクト) ===== */
+    #numbers { background: var(--primary); color: #fff; padding: 56px 0; }
+    #numbers h2 { color: #fff; }
+    .numbers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
+    .stat-item { position: relative; }
+    .stat-item .stat-num { font-size: 52px; font-weight: 800; color: var(--accent-light); line-height: 1.1; }
+    .stat-item .stat-unit { font-size: 18px; color: var(--accent-light); font-weight: 600; }
+    .stat-item .stat-label { font-size: 14px; color: rgba(255,255,255,0.75); margin-top: 8px; }
+
+    /* ===== PROBLEM ===== */
     #problem { background: var(--bg-white); }
     .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-    .problem-item {
-      background: var(--bg);
-      border-radius: 12px;
-      padding: 32px;
-      border-left: 4px solid var(--accent);
-    }
-    .problem-item h3 { font-size: 18px; margin-bottom: 8px; color: var(--primary); }
+    .problem-item { background: var(--bg); border-radius: 16px; padding: 32px; border-left: 4px solid var(--red-text); position: relative; transition: transform 0.2s; }
+    .problem-item:hover { transform: translateY(-4px); }
+    .problem-item .problem-icon { width: 48px; height: 48px; background: var(--red-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .problem-item .problem-icon svg { width: 24px; height: 24px; }
+    .problem-item h3 { font-size: 17px; margin-bottom: 8px; color: var(--primary); }
     .problem-item p { font-size: 14px; color: var(--text-light); }
 
-    /* Service */
-    #service { background: var(--bg); }
-    .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
-    .service-card {
-      background: var(--bg-white);
-      border-radius: 12px;
-      padding: 32px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    /* ===== TRANSFORM (Before/After) ===== */
+    #transform { background: var(--bg); }
+    .transform-grid { display: grid; grid-template-columns: 1fr 80px 1fr; gap: 0; align-items: stretch; }
+    .transform-col { padding: 40px 32px; border-radius: 16px; }
+    .transform-before { background: #FFF5F5; border: 2px solid #FEB2B2; }
+    .transform-after { background: #F0FFF4; border: 2px solid #9AE6B4; }
+    .transform-arrow { display: flex; align-items: center; justify-content: center; }
+    .transform-col h3 { font-size: 20px; font-weight: 800; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+    .transform-before h3 { color: var(--red-text); }
+    .transform-after h3 { color: var(--green-text); }
+    .transform-list { list-style: none; padding: 0; }
+    .transform-list li { padding: 12px 0; font-size: 15px; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; align-items: flex-start; gap: 10px; }
+    .transform-list li:last-child { border-bottom: none; }
+    .transform-list .icon-circle {
+      width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; flex-shrink: 0; margin-top: 2px;
     }
-    .service-card .icon { font-size: 40px; margin-bottom: 16px; }
-    .service-card h3 { font-size: 18px; margin-bottom: 8px; color: var(--primary); }
+    .transform-before .icon-circle { background: var(--red-soft); color: var(--red-text); }
+    .transform-after .icon-circle { background: var(--green-soft); color: var(--green-text); }
+
+    /* ===== SERVICE ===== */
+    #service { background: var(--bg-white); }
+    .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .service-card {
+      background: var(--bg); border-radius: 16px; padding: 32px; display: flex; gap: 20px;
+      transition: transform 0.2s, box-shadow 0.2s; border: 1px solid transparent;
+    }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); border-color: var(--accent); }
+    .service-card .svc-icon {
+      width: 56px; height: 56px; background: var(--accent-glow); border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .service-card .svc-icon svg { width: 28px; height: 28px; color: var(--accent); }
+    .service-card h3 { font-size: 17px; margin-bottom: 6px; color: var(--primary); }
     .service-card p { font-size: 14px; color: var(--text-light); }
 
-    /* Roadmap */
-    #roadmap { background: var(--bg-white); }
-    .roadmap-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; }
-    .month {
-      background: var(--bg);
-      border-radius: 12px;
-      padding: 32px;
-      position: relative;
+    /* ===== ROADMAP ===== */
+    #roadmap { background: var(--bg); }
+    .roadmap-timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; position: relative; }
+    .roadmap-timeline::before {
+      content: ''; position: absolute; top: 44px; left: 16.66%; right: 16.66%; height: 4px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%); border-radius: 2px; z-index: 1;
     }
-    .month-label {
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      padding: 4px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 16px;
+    .month { padding: 0 16px; text-align: center; position: relative; z-index: 2; }
+    .month-dot {
+      width: 32px; height: 32px; background: var(--accent); border-radius: 50%; margin: 28px auto 20px;
+      display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px;
+      box-shadow: 0 0 0 6px var(--accent-glow);
     }
-    .month h3 { font-size: 18px; margin-bottom: 12px; color: var(--primary); }
-    .month ul { list-style: none; padding: 0; }
-    .month ul li { padding: 6px 0; font-size: 14px; color: var(--text-light); padding-left: 20px; position: relative; }
-    .month ul li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
-    .month .goal { margin-top: 16px; padding: 12px; background: rgba(13,148,136,0.08); border-radius: 8px; font-size: 13px; color: var(--primary); font-weight: 600; }
+    .month-label { display: inline-block; background: var(--accent); color: #fff; padding: 4px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+    .month-card { background: var(--bg-white); border-radius: 16px; padding: 28px; margin-top: 16px; text-align: left; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .month-card h3 { font-size: 17px; margin-bottom: 12px; color: var(--primary); }
+    .month-card ul { list-style: none; padding: 0; }
+    .month-card ul li { padding: 5px 0; font-size: 13px; color: var(--text-light); padding-left: 18px; position: relative; }
+    .month-card ul li::before { content: ''; position: absolute; left: 0; top: 12px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-glow); border: 2px solid var(--accent); }
+    .month .goal { margin-top: 12px; padding: 10px 14px; background: var(--accent-glow); border-radius: 8px; font-size: 12px; color: var(--primary); font-weight: 600; text-align: left; }
 
-    /* Pricing */
-    #pricing { background: var(--bg); }
+    /* ===== PRICING ===== */
+    #pricing { background: var(--bg-white); }
+    .pricing-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
     .pricing-card {
-      max-width: 480px;
-      margin: 0 auto;
-      background: var(--bg-white);
-      border-radius: 16px;
-      padding: 48px;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      border: 2px solid var(--accent);
+      background: var(--bg-white); border-radius: 20px; padding: 48px; text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08); border: 2px solid var(--accent); position: relative; overflow: hidden;
     }
+    .pricing-card::before { content: 'おすすめ'; position: absolute; top: 20px; right: -32px; background: var(--accent); color: #fff; padding: 4px 40px; font-size: 12px; font-weight: 700; transform: rotate(45deg); }
     .pricing-card .plan-name { font-size: 14px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
-    .pricing-card .price { font-size: 56px; font-weight: 800; color: var(--primary); }
+    .pricing-card .price { font-size: 52px; font-weight: 800; color: var(--primary); }
     .pricing-card .price span { font-size: 18px; font-weight: 400; color: var(--text-light); }
-    .pricing-card .period { color: var(--text-light); margin-bottom: 24px; }
+    .pricing-card .period { color: var(--text-light); margin-bottom: 24px; font-size: 14px; }
     .pricing-card ul { list-style: none; text-align: left; margin-bottom: 32px; }
-    .pricing-card ul li { padding: 8px 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-left: 28px; position: relative; }
-    .pricing-card ul li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .pricing-card ul li { padding: 10px 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-left: 28px; position: relative; }
+    .pricing-card ul li::before { content: ''; position: absolute; left: 0; top: 16px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-soft); border: 2px solid var(--green-text); }
+    .pricing-compare { padding-top: 12px; }
+    .pricing-compare h3 { font-size: 20px; color: var(--primary); margin-bottom: 20px; }
+    .compare-bar { margin-bottom: 20px; }
+    .compare-bar .bar-label { font-size: 14px; color: var(--text-light); margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .compare-bar .bar-track { height: 32px; background: var(--bg); border-radius: 8px; overflow: hidden; position: relative; }
+    .compare-bar .bar-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; padding-left: 12px; font-size: 13px; font-weight: 700; color: #fff; }
+    .bar-this { background: var(--accent); }
+    .bar-alt1 { background: #E53E3E; }
+    .bar-alt2 { background: #DD6B20; }
+    .compare-note { font-size: 13px; color: var(--accent); font-weight: 600; margin-top: 16px; padding: 12px; background: var(--accent-glow); border-radius: 8px; }
 
-    /* Strength */
-    #strength { background: var(--bg-white); }
+    /* ===== STRENGTH ===== */
+    #strength { background: var(--bg); }
     .strength-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-    .strength-card {
-      display: flex;
-      gap: 16px;
-      padding: 24px;
-      background: var(--bg);
-      border-radius: 12px;
-    }
+    .strength-card { display: flex; gap: 16px; padding: 28px; background: var(--bg-white); border-radius: 16px; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .strength-card:hover { transform: translateY(-4px); }
     .strength-card .num { font-size: 32px; font-weight: 800; color: var(--accent); min-width: 48px; }
     .strength-card h3 { font-size: 16px; margin-bottom: 4px; color: var(--primary); }
     .strength-card p { font-size: 14px; color: var(--text-light); }
 
-    /* CTA */
-    #cta {
-      background: linear-gradient(135deg, var(--primary) 0%, #2D4A7A 100%);
-      color: #fff;
-      text-align: center;
-      padding: 80px 0;
-    }
-    #cta h2 { color: #fff; margin-bottom: 16px; }
-    #cta p { color: rgba(255,255,255,0.85); margin-bottom: 32px; }
+    /* ===== CTA ===== */
+    #cta { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: #fff; text-align: center; padding: 80px 0; position: relative; overflow: hidden; }
+    #cta::before { content: ''; position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(13,148,136,0.25) 0%, transparent 70%); border-radius: 50%; }
+    #cta h2 { color: #fff; margin-bottom: 16px; position: relative; z-index: 1; }
+    #cta p { color: rgba(255,255,255,0.85); margin-bottom: 32px; position: relative; z-index: 1; }
+    #cta .btn { position: relative; z-index: 1; }
 
     /* Footer */
-    footer {
-      background: #0F172A;
-      color: rgba(255,255,255,0.6);
-      padding: 40px 0;
-      text-align: center;
-      font-size: 14px;
-    }
+    footer { background: #0F172A; color: rgba(255,255,255,0.6); padding: 40px 0; text-align: center; font-size: 14px; }
     footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
 
-    /* Responsive */
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-visual { display: none; }
+      .hero-text .hero-badges { justify-content: center; }
+      .hero-buttons { justify-content: center; }
+      .numbers-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .transform-grid { grid-template-columns: 1fr; gap: 16px; }
+      .transform-arrow { transform: rotate(90deg); padding: 8px 0; }
+      .roadmap-timeline { grid-template-columns: 1fr; gap: 24px; }
+      .roadmap-timeline::before { display: none; }
+      .pricing-layout { grid-template-columns: 1fr; }
+    }
     @media (max-width: 768px) {
-      #hero h1 { font-size: 28px; }
+      .hero-text h1 { font-size: 28px; }
       #hero { padding: 60px 0 50px; }
       section { padding: 56px 0; }
       section h2 { font-size: 24px; }
-      .btn-outline { margin-left: 0; margin-top: 12px; display: block; }
+      .btn-outline { margin-left: 0; }
       nav .nav-links { display: none; }
       .pricing-card .price { font-size: 40px; }
+      .stat-item .stat-num { font-size: 36px; }
     }
   </style>
 </head>
@@ -193,6 +236,7 @@
       <a href="#" class="logo">GScale</a>
       <ul class="nav-links">
         <li><a href="#problem">こんなお悩みに</a></li>
+        <li><a href="#transform">導入効果</a></li>
         <li><a href="#service">サービス内容</a></li>
         <li><a href="#roadmap">3ヶ月プログラム</a></li>
         <li><a href="#pricing">料金</a></li>
@@ -201,33 +245,118 @@
     </div>
   </nav>
 
+  <!-- ===== HERO ===== -->
   <section id="hero">
     <div class="container">
-      <h1>AIを「使いこなせるチーム」に<br>変える3ヶ月プログラム</h1>
-      <p class="subtitle">Google認定エンジニアが伴走し、貴社の業務に最適なAI活用を一緒に設計。ツール選定からプロンプト設計、自走化まで月額10万円でサポートします。</p>
-      <a href="mailto:george@gscale.jp?subject=AI活用内製化支援プログラムのお問い合わせ" class="btn btn-accent">無料相談を予約する</a>
-      <a href="#service" class="btn btn-outline">サービス詳細を見る</a>
+      <div class="hero-inner">
+        <div class="hero-text">
+          <div class="hero-badges">
+            <span class="hero-badge">月額10万円</span>
+            <span class="hero-badge">情シス不要</span>
+            <span class="hero-badge">3ヶ月で自走</span>
+          </div>
+          <h1>AIを「使いこなせるチーム」に<br>変える3ヶ月プログラム</h1>
+          <p class="subtitle">Google認定エンジニアが伴走し、貴社の業務に最適なAI活用を一緒に設計。ツール選定からプロンプト設計、チームの自走化まで一貫してサポートします。</p>
+          <div class="hero-buttons">
+            <a href="mailto:george@gscale.jp?subject=AI活用内製化支援プログラムのお問い合わせ" class="btn btn-accent">無料相談を予約する</a>
+            <a href="#transform" class="btn btn-outline">導入効果を見る</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <svg width="360" height="300" viewBox="0 0 360 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Team circle -->
+            <circle cx="180" cy="150" r="100" fill="rgba(13,148,136,0.1)" stroke="rgba(13,148,136,0.3)" stroke-width="2"/>
+            <circle cx="180" cy="150" r="70" fill="rgba(13,148,136,0.08)" stroke="rgba(13,148,136,0.2)" stroke-width="1.5"/>
+            <!-- AI brain center -->
+            <circle cx="180" cy="150" r="30" fill="rgba(13,148,136,0.2)" stroke="#14B8A6" stroke-width="2"/>
+            <text x="180" y="155" text-anchor="middle" fill="#14B8A6" font-size="14" font-weight="700">AI</text>
+            <!-- People nodes -->
+            <circle cx="180" cy="60" r="18" fill="#1A365D" stroke="#fff" stroke-width="2"/>
+            <text x="180" y="65" text-anchor="middle" fill="#fff" font-size="11">PM</text>
+            <line x1="180" y1="78" x2="180" y2="120" stroke="rgba(13,148,136,0.4)" stroke-width="2" stroke-dasharray="4"/>
+            <circle cx="100" cy="195" r="18" fill="#1A365D" stroke="#fff" stroke-width="2"/>
+            <text x="100" y="200" text-anchor="middle" fill="#fff" font-size="10">Mktg</text>
+            <line x1="115" y1="183" x2="155" y2="165" stroke="rgba(13,148,136,0.4)" stroke-width="2" stroke-dasharray="4"/>
+            <circle cx="260" cy="195" r="18" fill="#1A365D" stroke="#fff" stroke-width="2"/>
+            <text x="260" y="200" text-anchor="middle" fill="#fff" font-size="10">Ops</text>
+            <line x1="245" y1="183" x2="205" y2="165" stroke="rgba(13,148,136,0.4)" stroke-width="2" stroke-dasharray="4"/>
+            <circle cx="120" cy="100" r="18" fill="#1A365D" stroke="#fff" stroke-width="2"/>
+            <text x="120" y="105" text-anchor="middle" fill="#fff" font-size="10">Sales</text>
+            <line x1="135" y1="110" x2="155" y2="135" stroke="rgba(13,148,136,0.4)" stroke-width="2" stroke-dasharray="4"/>
+            <circle cx="240" cy="100" r="18" fill="#1A365D" stroke="#fff" stroke-width="2"/>
+            <text x="240" y="105" text-anchor="middle" fill="#fff" font-size="10">Data</text>
+            <line x1="225" y1="110" x2="205" y2="135" stroke="rgba(13,148,136,0.4)" stroke-width="2" stroke-dasharray="4"/>
+            <!-- GScale advisor -->
+            <rect x="130" y="260" rx="8" width="100" height="30" fill="#14B8A6" stroke="#0D9488" stroke-width="1.5"/>
+            <text x="180" y="280" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">GScale</text>
+            <line x1="180" y1="260" x2="180" y2="180" stroke="#14B8A6" stroke-width="2"/>
+            <!-- Pulse animation ring -->
+            <circle cx="180" cy="150" r="100" fill="none" stroke="rgba(13,148,136,0.15)" stroke-width="1">
+              <animate attributeName="r" values="100;115;100" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+      </div>
     </div>
   </section>
 
+  <!-- ===== NUMBERS ===== -->
+  <section id="numbers">
+    <div class="container">
+      <h2>導入企業の平均的な効果</h2>
+      <div class="numbers-grid">
+        <div class="stat-item">
+          <div class="stat-num">60<span class="stat-unit">%</span></div>
+          <div class="stat-label">チェック業務の工数削減</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">3<span class="stat-unit">ヶ月</span></div>
+          <div class="stat-label">チームの自走化までの期間</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">480<span class="stat-unit">万円</span></div>
+          <div class="stat-label">年間の削減効果（派遣比）</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">0<span class="stat-unit">円</span></div>
+          <div class="stat-label">初期費用・導入費用</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROBLEM ===== -->
   <section id="problem">
     <div class="container">
       <h2>こんなお悩みはありませんか？</h2>
       <p class="section-lead">多くの企業がAI導入に取り組む中、現場では共通の課題に直面しています。</p>
       <div class="problem-grid">
         <div class="problem-item">
+          <div class="problem-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C53030" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+          </div>
           <h3>ChatGPTを試したが業務に定着しない</h3>
           <p>学習させたはずの内容がリセットされる、毎回同じ指示を繰り返す必要がある。結局、自分でやった方が早いと感じてしまう。</p>
         </div>
         <div class="problem-item">
+          <div class="problem-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C53030" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          </div>
           <h3>何から始めればいいかわからない</h3>
           <p>AIツールが多すぎてどれを使えばいいか判断できない。ChatGPT、Gemini、Claude... それぞれの強みと最適な使い方がわからない。</p>
         </div>
         <div class="problem-item">
+          <div class="problem-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C53030" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></svg>
+          </div>
           <h3>情報システム部門に頼れない</h3>
           <p>社内の優先順位の関係で情シスの対応を待てない。自部署で完結できるAI活用を進めたいが、技術的な相談相手がいない。</p>
         </div>
         <div class="problem-item">
+          <div class="problem-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C53030" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
           <h3>AI活用を社内に説明できない</h3>
           <p>「まず自分たちでやってみろ」と言われたものの、成果を出すための道筋が見えない。ROIをどう示せばいいかわからない。</p>
         </div>
@@ -235,45 +364,101 @@
     </div>
   </section>
 
+  <!-- ===== TRANSFORM (Before / After) ===== -->
+  <section id="transform">
+    <div class="container">
+      <h2>3ヶ月後、チームはこう変わります</h2>
+      <p class="section-lead">プログラム導入前後で、チームの働き方が大きく変わります。</p>
+      <div class="transform-grid">
+        <div class="transform-col transform-before">
+          <h3>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C53030" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+            Before
+          </h3>
+          <ul class="transform-list">
+            <li><span class="icon-circle">&times;</span><span>AIに指示しても毎回ゼロからやり直し</span></li>
+            <li><span class="icon-circle">&times;</span><span>チェック業務に1件30分、ダブルチェックで倍</span></li>
+            <li><span class="icon-circle">&times;</span><span>退職者が出ると業務知識も一緒に消える</span></li>
+            <li><span class="icon-circle">&times;</span><span>AIツールが多すぎて何を選べばいいかわからない</span></li>
+            <li><span class="icon-circle">&times;</span><span>PDCAを回す余裕がなく、作業に追われる日々</span></li>
+          </ul>
+        </div>
+        <div class="transform-arrow">
+          <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="28" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+            <path d="M20 30h20M32 22l8 8-8 8" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="transform-col transform-after">
+          <h3>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#276749" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+            After
+          </h3>
+          <ul class="transform-list">
+            <li><span class="icon-circle">&#10003;</span><span>スキルズに業務知識が蓄積、AIが即座に対応</span></li>
+            <li><span class="icon-circle">&#10003;</span><span>AIが一次チェック、人は確認だけで1件5分</span></li>
+            <li><span class="icon-circle">&#10003;</span><span>業務知識がドキュメント化、属人化から脱却</span></li>
+            <li><span class="icon-circle">&#10003;</span><span>業務に最適なツールが選定済み、使い方も習得</span></li>
+            <li><span class="icon-circle">&#10003;</span><span>浮いた時間で企画・分析・クリエイティブに注力</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICE ===== -->
   <section id="service">
     <div class="container">
       <h2>サービス内容</h2>
       <p class="section-lead">AI活用のプロフェッショナルが伴走し、貴社チームのAIスキルを底上げします。</p>
       <div class="service-grid">
         <div class="service-card">
-          <div class="icon">📅</div>
-          <h3>定例ミーティング</h3>
-          <p>隔週60分の定例会で進捗確認・課題解決・次のアクション設定。毎週開催も対応可能です。</p>
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div>
+            <h3>定例ミーティング</h3>
+            <p>隔週60分の定例会で進捗確認・課題解決・次のアクション設定。毎週開催も対応可能です。</p>
+          </div>
         </div>
         <div class="service-card">
-          <div class="icon">💬</div>
-          <h3>チャットサポート</h3>
-          <p>Chatwork / Slack / Google Chatで随時質問OK。回数無制限で、困った時にすぐ相談できます。</p>
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          <div>
+            <h3>チャットサポート</h3>
+            <p>Chatwork / Slack / Google Chatで随時質問OK。回数無制限で、困った時にすぐ相談できます。</p>
+          </div>
         </div>
         <div class="service-card">
-          <div class="icon">🔍</div>
-          <h3>業務棚卸し</h3>
-          <p>現行業務フローを可視化し、AI化すべき業務の優先順位を「効果×難易度」で整理します。</p>
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div>
+            <h3>業務棚卸し</h3>
+            <p>現行業務フローを可視化し、AI化すべき業務の優先順位を「効果 x 難易度」で整理します。</p>
+          </div>
         </div>
         <div class="service-card">
-          <div class="icon">🛠</div>
-          <h3>ツール選定・セットアップ</h3>
-          <p>Claude Code / Gemini / NotebookLM等、貴社の業務に最適なAIツールを選定・導入支援します。</p>
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+          <div>
+            <h3>ツール選定・セットアップ</h3>
+            <p>Claude Code / Gemini / NotebookLM等、貴社の業務に最適なAIツールを選定・導入支援します。</p>
+          </div>
         </div>
         <div class="service-card">
-          <div class="icon">✏️</div>
-          <h3>プロンプト・スキルズ設計</h3>
-          <p>業務知識をAIが理解できる形に構造化。繰り返し使えるプロンプトとスキルズを一緒に作ります。</p>
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <div>
+            <h3>プロンプト・スキルズ設計</h3>
+            <p>業務知識をAIが理解できる形に構造化。繰り返し使えるプロンプトとスキルズを一緒に作ります。</p>
+          </div>
         </div>
         <div class="service-card">
-          <div class="icon">🎓</div>
-          <h3>ハンズオン研修</h3>
-          <p>チームメンバー向けのAIツール活用トレーニング。実際の業務データを使った実践形式です。</p>
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg></div>
+          <div>
+            <h3>ハンズオン研修</h3>
+            <p>チームメンバー向けのAIツール活用トレーニング。実際の業務データを使った実践形式です。</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ===== ROADMAP ===== -->
   <section id="roadmap">
     <div class="container">
       <h2>3ヶ月プログラム</h2>
@@ -281,63 +466,92 @@
       <div class="roadmap-timeline">
         <div class="month">
           <span class="month-label">Month 1</span>
-          <h3>業務棚卸し＋ツールセットアップ</h3>
-          <ul>
-            <li>現行業務フローの可視化</li>
-            <li>AI化優先順位マトリクス作成</li>
-            <li>最適AIツールの選定・導入</li>
-            <li>最も効果の高い業務1つでプロンプト設計</li>
-          </ul>
-          <div class="goal">ゴール: AI活用の全体戦略が決まり、1つ目の業務でAIを使い始めている</div>
+          <div class="month-dot">1</div>
+          <div class="month-card">
+            <h3>業務棚卸し＋ツールセットアップ</h3>
+            <ul>
+              <li>現行業務フローの可視化</li>
+              <li>AI化優先順位マトリクス作成</li>
+              <li>最適AIツールの選定・導入</li>
+              <li>最も効果の高い業務1つでプロンプト設計</li>
+            </ul>
+            <div class="goal">ゴール: AI活用の全体戦略が決まり、1つ目の業務でAIを使い始めている</div>
+          </div>
         </div>
         <div class="month">
           <span class="month-label">Month 2</span>
-          <h3>スキルズ構築＋実践適用</h3>
-          <ul>
-            <li>業務別プロンプト・スキルズの本格構築</li>
-            <li>チームメンバーへのハンズオン研修</li>
-            <li>複数業務へのAI適用拡大</li>
-            <li>精度チューニングとフィードバック</li>
-          </ul>
-          <div class="goal">ゴール: チーム全員がAIツールを日常業務で使っている</div>
+          <div class="month-dot">2</div>
+          <div class="month-card">
+            <h3>スキルズ構築＋実践適用</h3>
+            <ul>
+              <li>業務別プロンプト・スキルズの本格構築</li>
+              <li>チームメンバーへのハンズオン研修</li>
+              <li>複数業務へのAI適用拡大</li>
+              <li>精度チューニングとフィードバック</li>
+            </ul>
+            <div class="goal">ゴール: チーム全員がAIツールを日常業務で使っている</div>
+          </div>
         </div>
         <div class="month">
           <span class="month-label">Month 3</span>
-          <h3>自走化＋効果測定</h3>
-          <ul>
-            <li>業務効率化の定量効果測定</li>
-            <li>スキルズ・プロンプトの最終チューニング</li>
-            <li>自走化に向けた運用マニュアル整備</li>
-            <li>今後の展開計画策定</li>
-          </ul>
-          <div class="goal">ゴール: GScaleの支援なしでAI活用を継続できる体制が整っている</div>
+          <div class="month-dot">3</div>
+          <div class="month-card">
+            <h3>自走化＋効果測定</h3>
+            <ul>
+              <li>業務効率化の定量効果測定</li>
+              <li>スキルズ・プロンプトの最終チューニング</li>
+              <li>自走化に向けた運用マニュアル整備</li>
+              <li>今後の展開計画策定</li>
+            </ul>
+            <div class="goal">ゴール: GScaleの支援なしでAI活用を継続できる体制が整っている</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ===== PRICING ===== -->
   <section id="pricing">
     <div class="container">
       <h2>料金プラン</h2>
       <p class="section-lead">情報システム部門の関与不要。部門決裁で始められる価格設計です。</p>
-      <div class="pricing-card">
-        <div class="plan-name">AI活用内製化支援</div>
-        <div class="price">10万円<span> / 月</span></div>
-        <div class="period">3ヶ月プログラム（以降、月次自動更新）</div>
-        <ul>
-          <li>定例ミーティング（隔週 or 毎週）</li>
-          <li>チャットサポート（回数無制限）</li>
-          <li>業務棚卸し・優先順位設計</li>
-          <li>AIツール選定・導入支援</li>
-          <li>プロンプト・スキルズ設計</li>
-          <li>ハンズオン研修</li>
-          <li>月次効果測定レポート</li>
-        </ul>
-        <a href="mailto:george@gscale.jp?subject=AI活用内製化支援プログラムのお問い合わせ" class="btn btn-accent" style="width:100%;">まずは無料相談</a>
+      <div class="pricing-layout">
+        <div class="pricing-card">
+          <div class="plan-name">AI活用内製化支援</div>
+          <div class="price">10万円<span> / 月</span></div>
+          <div class="period">3ヶ月プログラム（以降、月次自動更新）</div>
+          <ul>
+            <li>定例ミーティング（隔週 or 毎週）</li>
+            <li>チャットサポート（回数無制限）</li>
+            <li>業務棚卸し・優先順位設計</li>
+            <li>AIツール選定・導入支援</li>
+            <li>プロンプト・スキルズ設計</li>
+            <li>ハンズオン研修</li>
+            <li>月次効果測定レポート</li>
+          </ul>
+          <a href="mailto:george@gscale.jp?subject=AI活用内製化支援プログラムのお問い合わせ" class="btn btn-accent" style="width:100%;">まずは無料相談</a>
+        </div>
+        <div class="pricing-compare">
+          <h3>他の選択肢との比較</h3>
+          <div class="compare-bar">
+            <div class="bar-label"><span>本プログラム</span><span>年120万円</span></div>
+            <div class="bar-track"><div class="bar-fill bar-this" style="width:20%;">120万</div></div>
+          </div>
+          <div class="compare-bar">
+            <div class="bar-label"><span>AI開発を外注</span><span>年420万円</span></div>
+            <div class="bar-track"><div class="bar-fill bar-alt2" style="width:70%;">420万</div></div>
+          </div>
+          <div class="compare-bar">
+            <div class="bar-label"><span>派遣スタッフ1名</span><span>年600万円</span></div>
+            <div class="bar-track"><div class="bar-fill bar-alt1" style="width:100%;">600万</div></div>
+          </div>
+          <div class="compare-note">本プログラムなら派遣の1/5のコストで、チーム全体のAIスキルが向上します</div>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- ===== STRENGTH ===== -->
   <section id="strength">
     <div class="container">
       <h2>GScaleが選ばれる理由</h2>
@@ -375,6 +589,7 @@
     </div>
   </section>
 
+  <!-- ===== CTA ===== -->
   <section id="cta">
     <div class="container">
       <h2>まずは無料相談から</h2>
@@ -387,7 +602,7 @@
     <div class="container">
       <p><strong>株式会社GScale（ジースケール）</strong></p>
       <p>〒901-2223 沖縄県宜野湾市大山2-3-7</p>
-      <p>📞 090-9804-5636 | ✉️ <a href="mailto:george@gscale.jp">george@gscale.jp</a> | 🌐 <a href="https://gscale.jp">gscale.jp</a></p>
+      <p>090-9804-5636 | <a href="mailto:george@gscale.jp">george@gscale.jp</a> | <a href="https://gscale.jp">gscale.jp</a></p>
       <p style="margin-top:16px;">&copy; 2026 GScale Inc. All rights reserved.</p>
     </div>
   </footer>

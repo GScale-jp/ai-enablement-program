@@ -182,6 +182,40 @@ describe('アクセシビリティ', () => {
   });
 });
 
+describe('Before/Afterセクション', () => {
+  test('transformセクションが存在する', () => {
+    const section = document.getElementById('transform');
+    expect(section).not.toBeNull();
+  });
+
+  test('BeforeとAfterの両方が表示されている', () => {
+    const section = document.getElementById('transform');
+    const text = section.textContent;
+    expect(text).toContain('Before');
+    expect(text).toContain('After');
+  });
+});
+
+describe('数値インパクトセクション', () => {
+  test('numbersセクションが存在する', () => {
+    const section = document.getElementById('numbers');
+    expect(section).not.toBeNull();
+  });
+
+  test('数値が3つ以上表示されている', () => {
+    const section = document.getElementById('numbers');
+    const stats = section.querySelectorAll('.stat, .stat-item, .number-card');
+    expect(stats.length).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe('SVGイラスト', () => {
+  test('SVG要素がページ内に存在する', () => {
+    const svgs = document.querySelectorAll('svg');
+    expect(svgs.length).toBeGreaterThan(0);
+  });
+});
+
 describe('レスポンシブ対応', () => {
   test('スタイルシートが読み込まれている', () => {
     const styles = document.querySelectorAll('style, link[rel="stylesheet"]');
