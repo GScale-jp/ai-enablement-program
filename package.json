@@ -1,0 +1,28 @@
+{
+  "name": "ai-enablement-program",
+  "version": "1.0.0",
+  "description": "AI活用内製化支援プログラム - GScale",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GScale-jp/ai-enablement-program.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GScale-jp/ai-enablement-program/issues"
+  },
+  "homepage": "https://github.com/GScale-jp/ai-enablement-program#readme",
+  "jest": {
+    "testEnvironment": "node",
+    "transformIgnorePatterns": []
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jsdom": "^24.1.3"
+  }
+}
